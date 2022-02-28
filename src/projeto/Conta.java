@@ -1,134 +1,129 @@
 package projeto;
 
+import java.util.Random;
 import java.util.Scanner;
 
-public class Conta extends Cliente{
+/**
+ * 
+ * @author Raquel
+ *
+ */
 
-	private String nomeBanco = "RSoares";
-	private int agencia;
+public class Conta extends Cliente{
+	// Atributos
+	private int agencia = 1234;
 	private int numeroConta;
-	protected int tipo;
-	private double saldo;
+	private String tipo;
+	private double saldo;	
 	private boolean status;
 	
+	// Método construtor
 	public Conta() {
 		this.setSaldo(0);
 		this.setStatus(false);
 	}
 	
+	// Leitura de dados no console
+	Scanner scan = new Scanner(System.in);
+	
+	// Método para abrir conta
 	public void abrirConta() {
 	
-		Scanner scan = new Scanner(System.in);
-	
+		Random aleatorio = new Random(); // Para gerar número aleatório
+		numeroConta = aleatorio.nextInt(999999) + 100000; // Gerando número de conta aletório de 6 dígitos, iniciando em 100000
+				
 		this.setStatus(true);
-		System.out.println("------------------------------");
-		System.out.println("Bem vindo ao Banco " + this.getNomeBanco());
-		System.out.println("------------------------------");
-		System.out.println("Escolha uma opção abaixo:");
-		System.out.println("(1). Para abrir uma conta corrente");
-		System.out.println("(2). Para abrir uma conta poupança");
-		System.out.println("Resposta: ");
 		
-		int t = scan.nextInt();
+		// Interação com o usuário para escolha do tipo de conta
+		System.out.println("\nEscolha uma opção abaixo:");
+		System.out.println("(CC). Para abrir uma conta corrente");
+		System.out.println("(CP). Para abrir uma conta poupança");
+		System.out.println("\nResposta: ");
+		String resp = scan.next();
 		
-		switch(t) {
-			case 1:{
-				System.out.println("Nome: " + this.getDono());
-				System.out.println("CPF: " + this.getCpf());	
-				System.out.println("Agência: " + this.getAgencia());	
-				System.out.println("Numero da Conta: " + this.getNumeroConta());	
-				System.out.println("Parabéns! Você acabou de criar uma conta corrente!");
-				System.out.println("--------------------------------------------------");
-				System.out.println("Como presente, receba R$50,00!");
-				this.setSaldo(this.getSaldo() + 50);	
-				System.out.println("Saldo: R$" + this.getSaldo());
-				break;
-			}
-			case 2:{
-				System.out.println("Nome: " + this.getDono());
-				System.out.println("CPF: " + this.getCpf());	
-				System.out.println("Agência: " + this.getAgencia());
-				System.out.println("Numero da Conta: " + this.getNumeroConta());
-				System.out.println("Parabéns! Você acabou de criar uma conta poupança!");
-				System.out.println("--------------------------------------------------");
-				System.out.println("Como presente, receba R$20,00!");
-				this.setSaldo(this.getSaldo() + 20);	
-				System.out.println("Saldo: R$" + this.getSaldo());
-				break;
-			}
+		while(!(resp.equals("CC")) && !(resp.equals("CP"))) {
+			System.out.println("\n***Operação inválida! Digite um caracter válido!***\n");
+			System.out.println("\nResposta: ");
+			resp = scan.next();
 		}
-		scan.close();
+		this.setTipo(resp);
+		
+		System.out.println("\nNome: ");
+		nome = scan.next();
+		System.out.println("CPF: ");	
+		cpf = scan.nextInt();
+		
+		if(resp.equals("CC")) {
+			System.out.println("\n***Conta corrente criada com sucesso!***");
+			System.out.println("-------------------------------------------");
+			System.out.println("            :::CONTA CORRENTE:::           ");
+			System.out.println("-------------------------------------------");
+			System.out.println("Nome: " + this.getNome());
+			System.out.println("CPF: " + this.getCpf());
+			System.out.println("Agência: " + this.getAgencia());
+			System.out.println("Conta: " + this.getNumeroConta());
+			System.out.println("\n => Detalhes da conta:");
+			System.out.print(" - Bônus de R$50,00 na conta!\n");
+			System.out.println("-------------------------------------------\n");
+			this.setSaldo(50);
+		}
+		else if(resp.equals("CP")) {
+			System.out.println("\n***Conta poupança criada com sucesso!***");
+			System.out.println("-------------------------------------------");
+			System.out.println("            :::CONTA POUPANÇA:::           ");
+			System.out.println("-------------------------------------------");
+			System.out.println("Nome: " + this.getNome());
+			System.out.println("CPF: " + this.getCpf());
+			System.out.println("Agência: " + this.getAgencia());
+			System.out.println("Conta: " + this.getNumeroConta());
+			System.out.println("\n => Detalhes da conta:");
+			System.out.print(" - Bônus de R$10,00 na conta! \n");
+			System.out.println("-------------------------------------------\n");
+			this.setSaldo(10);
+		}
 	}
 	
+	//Método para fechar conta
 	public void fecharConta() {
 		if(this.getSaldo() > 0) {
-			System.out.println("Conta não pode ser fechada, pois ainda tem saldo!");
-			System.out.println("Saldo: R$" + this.getSaldo());
-		}
-		else if(this.getSaldo() < 0) {
-			System.out.println("Conta não pode ser fechada, pois ainda tem débito");
-			System.out.println("Saldo: R$" + this.getSaldo());
+			System.out.println("\n***Conta não pode ser fechada, pois ainda tem saldo!***\n");
 		}
 		else {
 			this.setStatus(false);
-			System.out.println("Conta fechada com sucesso!");
+			System.out.println("\n***Conta fechada com sucesso!***\n");
 		}
 	}
 	
+	// Método para sacar o dinheiro
 	public void sacar(double valor) {
-	
 		if(this.getStatus() && valor <= this.getSaldo()) {
 			this.setSaldo(this.getSaldo() - valor);
-			System.out.println("Saque realizado com sucesso!");
-			System.out.println("Saldo: R$" + this.getSaldo());
+			System.out.println("\n***Saque realizado com sucesso!***\n");
 		}
 		else{
-				System.out.println("Saldo insuficiente!");
-				System.out.println("Saldo: R$" + this.getSaldo());
+			System.out.println("\n***Saldo insuficiente!***\n");
 		}
 	}
 	
+	// M[etodo para depositar dinheiro
 	public void depositar(double valor) {
 		
 		if(this.getStatus() && valor > 0) {
-			//if() {
 				this.setSaldo(this.getSaldo() + valor); 
-				System.out.println("Deposito realizado com sucesso!");
-				System.out.println("Saldo: R$" + this.getSaldo());
-			//}
+				System.out.println("\n***Depósito realizado com sucesso!***\n");
 		}
 		else {
-			System.out.println("Valor insuficiente para depósito!");
-			System.out.println("Saldo: R$" + this.getSaldo());
+			System.out.println("\n***Valor insuficiente para depósito!***\n");
 		}
 	}
-	
-	public void transferir(double valor) {
-		
-		if(this.getStatus() && valor <= this.getSaldo()) {		
-			this.setSaldo(this.getSaldo() - valor);
-			System.out.println("Transferência realizada com sucesso!");
-			System.out.println("Saldo: R$" + this.getSaldo());
-		}
-		else {
-			System.out.println("Saldo insuficiente para realizar transferência!");
-		}
-	}
-		
-	public String getNomeBanco() {
-		return nomeBanco;
-	}
-
-	public void setNomeBanco(String nomeBanco) {
-		this.nomeBanco = nomeBanco;
-	}
-
+	// Métodos Acessores
 	public int getAgencia() {
 		return agencia;
 	}
 
 	public void setAgencia(int agencia) {
 		this.agencia = agencia;
+		
 	}
 
 	public int getNumeroConta() {
@@ -139,11 +134,11 @@ public class Conta extends Cliente{
 		this.numeroConta = numeroConta;
 	}
 	
-	public int getTipo() {
+	public String getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(int tipo) {
+	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
 

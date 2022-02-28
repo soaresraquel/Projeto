@@ -1,15 +1,16 @@
 package projeto;
 
 public class Cliente {
-
-	private String dono;
-	private int cpf;
+	// Atributos
+	protected String nome;
+	protected int cpf;
 	
-	public String getDono() {
-		return dono;
+	// Métodos Acessores
+	public String getNome() {
+		return nome;
 	}
-	public void setDono(String dono) {
-		this.dono = dono;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 	public int getCpf() {
 		return cpf;
